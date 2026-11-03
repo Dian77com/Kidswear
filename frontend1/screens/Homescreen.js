@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import {useState} from "react";
 import {
   Animated,
   ScrollView,
@@ -15,12 +16,11 @@ import {
 
 const HEADER_HEIGHT = 70;
 
-// Vendosi kontaktet reale këtu.
 const CONTACT_EMAIL = "";
-const CONTACT_PHONE = ""; // Me prefiks, p.sh. +383...
+const CONTACT_PHONE = ""; 
 const CONTACT_ADDRESS = "";
-const CONTACT_INSTAGRAM = ""; // Linku i plotë
-const CONTACT_FACEBOOK = ""; // Linku i plotë
+const CONTACT_INSTAGRAM = ""; 
+const CONTACT_FACEBOOK = ""; 
 
 const categories = [
   {
@@ -64,7 +64,6 @@ function CategoryCard({ category, mobile }) {
       useNativeDriver: true,
     }).start();
   }
-
   return (
     <Animated.View
       style={[
@@ -200,7 +199,8 @@ function ContactRow({ icon, label, value, url }) {
   );
 }
 
-export default function HomeScreen() {
+export default function HomeScreen({ndryshoFaqen}) {
+
   const { width } = useWindowDimensions();
   const mobile = width < 700;
 
@@ -224,7 +224,7 @@ export default function HomeScreen() {
     scrollRef.current?.scrollTo({
       y: Math.max(0, collectionY.current - HEADER_HEIGHT),
       animated: true,
-    });
+    }); 
   }
 
   function animateButton(value) {
@@ -246,7 +246,7 @@ export default function HomeScreen() {
         >
           <View style={[styles.heroText, mobile && styles.heroTextMobile]}>
             <Text style={[styles.title, mobile && styles.titleMobile]}>
-              Stil i vogël.{"\n"}Gëzim i madh.
+              Stil i vogël.{"\n"}Gëzim i madh.  
             </Text>
 
             <Text style={[styles.subtitle, mobile && styles.subtitleMobile]}>
@@ -434,7 +434,7 @@ export default function HomeScreen() {
 
           <Text style={styles.credit}>
             U punua nga{" "}
-            <Text style={styles.creditBrand}>Tevuzo</Text>
+            <Image source={require("../assets/tevuzo.png")} style={styles.creditLogo} />
           </Text>
         </View>
       </ScrollView>
@@ -453,17 +453,39 @@ export default function HomeScreen() {
               resizeMode="contain"
             />
           </Pressable>
+          
+          <View style={styles.Bcategory}>
+            <Pressable style={styles.pressable21}>
+              <Ionicons name="home-outline" size={20} color="#49382B"  />
+              <Text style={{fontSize:20,color:"#49382B", fontFamily:"Poppins_400Regular",marginTop:4,}}>Ballina</Text>
+            </Pressable>
+            <Pressable style={styles.pressable22} onPress={()=>ndryshoFaqen("Koleksioni")}> 
+              <Ionicons name="grid-outline" size={20} color="#49382B"  />
+              <Text style={{fontSize:20,color:"#49382B",fontFamily:"Poppins_400Regular"}}>Koleksioni</Text>
+            </Pressable>
+            <Pressable style={styles.pressable23}>
+              <Ionicons name="pricetag-outline" size={20} color="#49382B"  />
+              <Text style={{fontSize:20,color:"#49382B",fontFamily:"Poppins_400Regular"}}>Ofertat</Text>
+            </Pressable>
+
+
+
+          </View>
 
           <Pressable
             style={styles.searchButton}
             accessibilityRole="button"
-            accessibilityLabel="Kërko produkte"
+            accessibilityLabel="shop"
             onPress={() => {
-              // Shto këtu hapjen e kërkimit.
+
             }}
           >
-            <Ionicons name="search-outline" size={24} color="#49382B" />
+            <Ionicons name="cart-outline" size={24} color="#49382B" />
           </Pressable>
+
+
+            
+
         </View>
       </View>
     </View>
@@ -473,7 +495,38 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "##FDF8F2",
+  },
+
+  Bcategory: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 28,
+    flex: 1,
+    marginLeft: 58,
+  },
+  pressable22: {
+    flexDirection:"row",
+    gap:3,
+    alignItems:"center",
+
+  },
+  pressable23:{
+    flexDirection:"row",
+    gap:3,
+    alignItems:"center",
+
+
+  },
+  pressable21:{
+    flexDirection:"row",
+    gap:3,
+    borderBottomWidth:2,
+    borderBottomColor:"#49382B",
+    borderBottomStyle:"outset",
+    paddingBottom:3, 
+    alignItems:"center",
+    
   },
 
   scroll: {
@@ -545,7 +598,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: "Georgia",
+    fontFamily: "Poppins_400Regular",
     fontSize: 66,
     lineHeight: 70,
     color: "#202020",
@@ -554,6 +607,8 @@ const styles = StyleSheet.create({
   titleMobile: {
     fontSize: 36,
     lineHeight: 44,
+    fontFamily: "Poppins_400Regular",
+
   },
 
   subtitle: {
@@ -571,6 +626,15 @@ const styles = StyleSheet.create({
 
   buttonWrapper: {
     alignSelf: "flex-start",
+  },
+  creditLogo:{
+    width:200,
+    height:200,
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    flexDirection:"row",
+    marginLeft:40,
   },
 
   button: {
@@ -591,6 +655,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 17,
     fontWeight: "600",
+    fontFamily:"Poppins_400Regular"
   },
 
   section: {
@@ -599,6 +664,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 24,
     paddingVertical: 24,
+    fontFamily:"Poppins_400Regular"
+
   },
 
   grid: {
@@ -606,13 +673,15 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     rowGap: 24,
+    fontFamily:"Poppins_400Regular"
   },
 
   categoryCard: {
     backgroundColor: "#F4F1EC",
     borderRadius: 12,
     overflow: "hidden",
-  },
+    fontFamily:"Poppins_400Regular",
+   },
 
   categoryContent: {
     width: "100%",
@@ -628,6 +697,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    fontFamily:"Poppins_400Regular",
   },
 
   categoryName: {
@@ -643,7 +713,7 @@ const styles = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontFamily: "Georgia",
+    fontFamily: "Poppins_400Regular",
     fontSize: 36,
     marginBottom: 22,
     color: "#202020",
@@ -713,6 +783,8 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     color: "#9A7355",
     marginBottom: 12,
+    fontFamily:"Poppins_400Regular"
+
   },
 
   contactTitle: {
@@ -720,12 +792,16 @@ const styles = StyleSheet.create({
     fontSize: 42,
     color: "#49382B",
     marginBottom: 16,
+    fontFamily:"Poppins_400Regular"
+
   },
 
   contactDescription: {
     fontSize: 17,
     lineHeight: 28,
     color: "#655A50",
+    fontFamily:"Poppins_400Regular"
+
   },
 
   whatsappButton: {
@@ -738,6 +814,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 8,
     backgroundColor: "#49382B",
+    fontFamily:"Poppins_400Regular"
   },
 
   contactCard: {
@@ -803,7 +880,7 @@ const styles = StyleSheet.create({
   },
 
   footerBrand: {
-    fontFamily: "Georgia",
+    fontFamily: "Poppins_400Regular",
     fontSize: 28,
     letterSpacing: 3,
     color: "#FFFFFF",
@@ -815,6 +892,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     textAlign: "center",
+    fontFamily:"Poppins_400Regular"
+
   },
 
   footerDivider: {
@@ -830,6 +909,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
     textAlign: "center",
+    fontFamily:"Poppins_400Regular"
+
   },
 
   credit: {
@@ -837,6 +918,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#E7DACE",
     textAlign: "center",
+    fontFamily:"Poppins_400Regular"
   },
 
   creditBrand: {
